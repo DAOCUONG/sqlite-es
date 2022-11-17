@@ -1,0 +1,1 @@
+Daos-MBP:sqlite-es dao$ cat db/init.sql | sqlite3 aumtest.db 

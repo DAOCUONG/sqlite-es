@@ -23,6 +23,8 @@ pub async fn default_sqlites_pool(connection_string: &str) -> Pool<Sqlite> {
     .expect("unable to connect to database")
     .create_if_missing(true).connect().await;
     
+    
+
     SqlitePoolOptions::new()
         .max_connections(5)
         .connect(connection_string)
