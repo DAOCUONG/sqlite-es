@@ -13,13 +13,13 @@ use sqlx::{Pool, Sqlite};
 /// use postgres_es::default_postgress_pool;
 ///
 /// # async fn configure_pool() {
-/// let connection_string = "postgresql://test_user:test_pass@localhost:5432/test";
+/// let connection_string = "sqlite://aum-es.db";
 /// let pool: Pool<Sqlite> = default_postgress_pool(connection_string).await;
 /// # }
 /// ```
 pub async fn default_sqlites_pool(connection_string: &str) -> Pool<Sqlite> {
     SqlitePoolOptions::new()
-        .max_connections(10)
+        .max_connections(1)
         .connect(connection_string)
         .await
         .expect("unable to connect to database")
