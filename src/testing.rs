@@ -114,7 +114,7 @@ pub(crate) mod tests {
     }
 
     pub(crate) const TEST_CONNECTION_STRING: &str =
-        "postgresql://test_user:test_pass@127.0.0.1:5432/test";
+        "sqlite://aumtest.db";
 
     pub(crate) fn test_event_envelope(
         id: &str,

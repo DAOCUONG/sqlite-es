@@ -9,8 +9,8 @@ use sqlx::{Pool, Sqlite};
 /// A connection pool is needed for both the event and view repositories.
 ///
 /// ```
-/// use sqlx::{Pool, Postgres};
-/// use postgres_es::default_postgress_pool;
+/// use sqlx::{Pool, Sqlite};
+/// use sqlite_es::default_sqlites_pool;
 ///
 /// # async fn configure_pool() {
 /// let connection_string = "sqlite://aum-es.db";
@@ -41,7 +41,7 @@ where
 }
 
 /// A convenience function for creating a CqrsFramework using a snapshot store.
-pub fn postgres_snapshot_cqrs<A>(
+pub fn sqlite_snapshot_cqrs<A>(
     pool: Pool<Sqlite>,
     query_processor: Vec<Box<dyn Query<A>>>,
     snapshot_size: usize,
@@ -56,7 +56,7 @@ where
 }
 
 /// A convenience function for creating a CqrsFramework using an aggregate store.
-pub fn postgres_aggregate_cqrs<A>(
+pub fn sqlite_aggregate_cqrs<A>(
     pool: Pool<Sqlite>,
     query_processor: Vec<Box<dyn Query<A>>>,
     services: A::Services,
