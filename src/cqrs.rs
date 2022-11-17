@@ -1,9 +1,10 @@
 use cqrs_es::persist::PersistedEventStore;
 use cqrs_es::{Aggregate, CqrsFramework, Query};
+use std::str::FromStr;
 
 use crate::{SqliteCqrs, SqliteEventRepository};
-use sqlx::sqlite::SqlitePoolOptions;
-use sqlx::{Pool, Sqlite};
+use sqlx::sqlite::{SqlitePoolOptions, SqliteConnectOptions};
+use sqlx::{Pool, Sqlite, ConnectOptions};
 
 /// A convenience method for building a simple connection pool for PostgresDb.
 /// A connection pool is needed for both the event and view repositories.
@@ -14,12 +15,16 @@ use sqlx::{Pool, Sqlite};
 ///
 /// # async fn configure_pool() {
 /// let connection_string = "sqlite://aum-es.db";
-/// let pool: Pool<Sqlite> = default_postgress_pool(connection_string).await;
+/// let pool: Pool<Sqlite> = default_sqlites_pool(connection_string).await;
 /// # }
 /// ```
 pub async fn default_sqlites_pool(connection_string: &str) -> Pool<Sqlite> {
+    SqliteConnectOptions::from_str(connection_string)
+    .expect("unable to connect to database")
+    .create_if_missing(true).connect().await;
+    
     SqlitePoolOptions::new()
-        .max_connections(1)
+        .max_connections(5)
         .connect(connection_string)
         .await
         .expect("unable to connect to database")
