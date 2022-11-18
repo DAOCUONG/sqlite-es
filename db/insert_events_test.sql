@@ -1,0 +1,2 @@
+INSERT INTO events (aggregate_type, aggregate_id, sequence, event_type, event_version, payload, metadata)
+VALUES ("TestAggregate", "a067ac57-1c10-4fa1-8709-1b2530f6bf21",4, "Created", "1.0", json_object("id","a067ac57-1c10-4fa1-8709-1b2530f6bf21"),json_object("dao","cuong"));

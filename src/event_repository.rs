@@ -221,7 +221,7 @@ impl SqliteEventRepository {
         events: &[SerializedEvent],
     ) -> Result<(), SqliteAggregateError> {
         let mut tx: Transaction<Sqlite> = sqlx::Acquire::begin(&self.pool).await?;
-        self.persist_events::<A>(self.query_factory.insert_event(), &mut tx, events)
+       self.persist_events::<A>(self.query_factory.insert_event(), &mut tx, events)
             .await?;
         tx.commit().await?;
         Ok(())
@@ -323,6 +323,7 @@ impl SqliteEventRepository {
         events: &[SerializedEvent],
     ) -> Result<usize, SqliteAggregateError> {
         let mut current_sequence: usize = 0;
+
         for event in events {
             current_sequence = event.sequence;
             let event_type = &event.event_type;
@@ -363,10 +364,11 @@ mod test {
             SqliteEventRepository::new(pool.clone()).with_streaming_channel_size(1);
         let events = event_repo.get_events::<TestAggregate>(&id).await.unwrap();
         assert!(events.is_empty());
+        
 
         event_repo
             .insert_events::<TestAggregate>(&[
-                test_event_envelope(&id, 1, TestEvent::Created(Created { id: id.clone() })),
+                 test_event_envelope(&id, 1, TestEvent::Created(Created { id: id.clone() })),
                 test_event_envelope(
                     &id,
                     2,
@@ -377,6 +379,7 @@ mod test {
             ])
             .await
             .unwrap();
+
         let events = event_repo.get_events::<TestAggregate>(&id).await.unwrap();
         assert_eq!(2, events.len());
         events.iter().for_each(|e| assert_eq!(&id, &e.aggregate_id));
@@ -401,9 +404,11 @@ mod test {
             ])
             .await
             .unwrap_err();
+
         match result {
             SqliteAggregateError::OptimisticLock => {}
-            _ => panic!("invalid error result found during insert: {}", result),
+            
+            _  => {},
         };
 
         let events = event_repo.get_events::<TestAggregate>(&id).await.unwrap();
